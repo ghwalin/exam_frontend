@@ -80,7 +80,17 @@
           </select>
         </th>
         <th scope="col">
-          <label for="statusSearch">Status</label>
+          <label for="statusSearch">
+            Status
+            <i class="bi bi-question-circle-fill text-info"
+               title="pendent (Arztzeugnis ist pendent)
+             offen (Prüfungsunterlagen noch nicht abgegeben)
+             abgegeben (Prüfungsunterlagen abgegeben)
+             erhalten (Aufsicht hat Prüfung erhalten)
+             absolviert (Prüfung absolviert)
+             pnab (Prüfung nicht absolviert)
+             gelöscht (Eintrag gelöscht)"></i>
+          </label>
           <select id="statusSearch" class="form-select" data-edit="all" type="text" form="filterForm">
             <option value="open">Offen</option>
             <option value="closed">Abgeschlossen</option>
@@ -226,7 +236,7 @@
 </main>
 <footer class="text-center text-lg-start">
   <div class="container-xxl text-info text-center p-3">
-    Exam v0.8r20230215 &copy; 2023 by Marcel Suter
+    Exam v1.0r20230331 &copy; 2023 by Marcel Suter
   </div>
 </footer>
 </body>
