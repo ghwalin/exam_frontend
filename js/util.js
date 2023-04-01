@@ -211,6 +211,8 @@ function getStatus(event) {
     let targetElement = event.target;
     if (targetElement.tagName === "IMG") {
         targetElement = targetElement.parentNode;
+    } else if (targetElement.tagName === "I") {
+        targetElement = targetElement.parentNode.parentNode;
     }
     return targetElement.getAttribute("data-status");
 }

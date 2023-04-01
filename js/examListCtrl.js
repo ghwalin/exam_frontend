@@ -175,6 +175,9 @@ function showExamlist(data) {
                         button.id = "sendEmail";
                         button.title = "Email";
                         button.className = "btn btn-sm btn-primary ms-1";
+                        if (exam.status < '10' || exam.status > '40') {
+                            button.disabled = true;
+                        }
                         button.setAttribute("data-examuuid", exam.exam_uuid);
                         button.setAttribute("data-status", exam.status);
                         button.addEventListener("click", sendEmail);
