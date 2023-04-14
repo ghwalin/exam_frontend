@@ -21,7 +21,10 @@ footer .text-center {
     color: var(--bs-cyan);
     border-top: var(--bs-cyan) 2px solid;
 }
-
+fieldset  {
+    padding: 5px;
+    margin: 5px 0;
+}
 #popup {
     position: fixed;
     z-index: 99;
