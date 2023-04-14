@@ -57,56 +57,55 @@ function showExamlist(data, locked) {
             let prevEmail = "";
             let count = 0;
             data.forEach(exam => {
-                try {
-                    let row = rows.insertRow(-1);
-                    let cell = row.insertCell(-1);
-                    let field = document.createElement("input");
-                    field.type = "checkbox";
-                    field.name = "selected";
-                    field.classList = "form-check-input";
-                    field.setAttribute("data-examUUID", exam.exam_uuid);
-                    cell.appendChild(field);
+                if (exam.status != 90) {
+                    try {
+                        let row = rows.insertRow(-1);
+                        let cell = row.insertCell(-1);
+                        let field = document.createElement("input");
+                        field.type = "checkbox";
+                        field.name = "selected";
+                        field.classList = "form-check-input";
+                        field.setAttribute("data-examUUID", exam.exam_uuid);
+                        cell.appendChild(field);
 
-                    cell = row.insertCell(-1);
-                    if (exam.student.email !== prevEmail) {
-                        prevEmail = exam.student.email;
-                        count++;
-                        cell.innerText = count;
+                        cell = row.insertCell(-1);
+                        if (exam.student.email !== prevEmail) {
+                            prevEmail = exam.student.email;
+                            count++;
+                            cell.innerText = count;
+                        }
+                        cell = row.insertCell(-1);
+                        field = document.createElement("input");
+                        field.value = exam.room;
+                        field.name = "room";
+                        field.size = 8;
+                        field.setAttribute("data-examUUID", exam.exam_uuid);
+                        field.addEventListener("change", changeExam);
+                        cell.appendChild(field);
+
+                        cell = row.insertCell(-1);
+                        let dropdown = document.createElement("select");
+                        dropdown.setAttribute("data-examUUID", exam.exam_uuid);
+                        dropdown.addEventListener("change", changeExam);
+                        dropdown.classList = "form-select";
+                        addOptions(dropdown);
+                        dropdown.value = exam.status;
+                        dropdown.name = "status";
+                        cell.appendChild(dropdown);
+
+                        cell = row.insertCell(-1);
+                        cell.innerHTML = exam.student.firstname + " " + exam.student.lastname + ", " + exam.cohort;
+                        cell = row.insertCell(-1);
+                        cell.innerHTML = exam.teacher.firstname + " " + exam.teacher.lastname;
+                        cell = row.insertCell(-1);
+                        cell.innerHTML = exam.cohort;
+                        cell = row.insertCell(-1);
+                        cell.innerHTML = exam.module + " / " + exam.exam_num;
+                        cell = row.insertCell(-1);
+                        cell.innerHTML = exam.duration;
+                    } catch (error) {
+                        console.log("Error in exam with uuid: " + exam.exam_uuid);
                     }
-                    cell = row.insertCell(-1);
-                    field = document.createElement("input");
-                    field.value = exam.room;
-                    field.name = "room";
-                    field.size = 10;
-                    field.setAttribute("data-examUUID", exam.exam_uuid);
-                    field.addEventListener("change", changeExam);
-                    cell.appendChild(field);
-
-                    cell = row.insertCell(-1);
-                    let dropdown = document.createElement("select");
-                    dropdown.setAttribute("data-examUUID", exam.exam_uuid);
-                    dropdown.addEventListener("change", changeExam);
-                    dropdown.classList = "form-select";
-                    addOptions(dropdown);
-                    dropdown.value = exam.status;
-                    dropdown.name = "status";
-                    cell.appendChild(dropdown);
-
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = exam.student.firstname + " " + exam.student.lastname;
-                    cell.innerHTML += "<br />" + exam.student.email;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = exam.teacher.firstname + " " + exam.teacher.lastname;
-                    cell.innerHTML += "<br />" + exam.teacher.email;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = exam.cohort;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = exam.module + " / " + exam.exam_num;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = exam.duration;
-
-                } catch (error) {
-                    console.log("Error in exam with uuid: " + exam.exam_uuid);
                 }
             });
             lockForm("filterForm", locked);
