@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         document.getElementById("dateSearch").addEventListener("change", searchExamlist);
         document.getElementById("selectAll").addEventListener("change", selectAll);
-        document.getElementById("sendEmail").addEventListener("click", sendAllEmail);
+        document.getElementById("sendEmail").addEventListener("click", sendReminder);
+        document.getElementById("sendReminder").addEventListener("click", sendReminder);
         document.getElementById("createPDF").addEventListener("click", createAllPDF);
     }
 });
@@ -75,15 +76,6 @@ function showExamlist(data, locked) {
                             cell.innerText = count;
                         }
                         cell = row.insertCell(-1);
-                        field = document.createElement("input");
-                        field.value = exam.room;
-                        field.name = "room";
-                        field.size = 8;
-                        field.setAttribute("data-examUUID", exam.exam_uuid);
-                        field.addEventListener("change", changeExam);
-                        cell.appendChild(field);
-
-                        cell = row.insertCell(-1);
                         let dropdown = document.createElement("select");
                         dropdown.setAttribute("data-examUUID", exam.exam_uuid);
                         dropdown.addEventListener("change", changeExam);
@@ -92,7 +84,14 @@ function showExamlist(data, locked) {
                         dropdown.value = exam.status;
                         dropdown.name = "status";
                         cell.appendChild(dropdown);
-
+                        cell = row.insertCell(-1);
+                        field = document.createElement("input");
+                        field.value = exam.room;
+                        field.name = "room";
+                        field.size = 8;
+                        field.setAttribute("data-examUUID", exam.exam_uuid);
+                        field.addEventListener("change", changeExam);
+                        cell.appendChild(field);
                         cell = row.insertCell(-1);
                         cell.innerHTML = exam.student.firstname + " " + exam.student.lastname + ", " + exam.cohort;
                         cell = row.insertCell(-1);
@@ -152,6 +151,8 @@ function addOptions(field) {
  * @returns compare result
  */
 function sortExams(examA, examB) {
+    if (examA.status < examB.status) return -1;
+    if (examA.status > examB.status) return 1;
     if (examA.room < examB.room) return -1;
     if (examA.room > examB.room) return 1;
 
@@ -162,9 +163,9 @@ function sortExams(examA, examB) {
 
 /**
  * sends an email for all selected exams
- * @param event
+ * @param service  the api service to call
  */
-function sendAllEmail(event) {
+function sendAllEmail(service) {
     showMessage("info", "Sende Emails ...", 2);
     let data = new URLSearchParams();
     const boxes = document.querySelectorAll("input:checked");
@@ -174,7 +175,7 @@ function sendAllEmail(event) {
                 data.append("exam_uuid", box.getAttribute("data-examuuid"));
             }
         }
-        fetch(API_URL + "/email", {
+        fetch(API_URL + service, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -193,6 +194,22 @@ function sendAllEmail(event) {
     } else {
         showMessage("warning", "keine Prüfung ausgewählt");
     }
+}
+
+/**
+ * sends an invitiation email for all selected exams
+ * @param event
+ */
+function sendInvitation(event) {
+    sendAllEmail("/email/invitation");
+}
+
+/**
+ * sends a reminder email for all selected exams
+ * @param event
+ */
+function sendReminder(event) {
+    sendAllEmail("/email/reminder")
 }
 
 /**
