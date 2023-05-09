@@ -97,8 +97,6 @@ function showExamlist(data, locked) {
                         cell = row.insertCell(-1);
                         cell.innerHTML = exam.teacher.firstname + " " + exam.teacher.lastname;
                         cell = row.insertCell(-1);
-                        cell.innerHTML = exam.cohort;
-                        cell = row.insertCell(-1);
                         cell.innerHTML = exam.module + " / " + exam.exam_num;
                         cell = row.insertCell(-1);
                         cell.innerHTML = exam.duration;

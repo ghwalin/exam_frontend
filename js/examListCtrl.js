@@ -9,7 +9,6 @@ readEventList(["dateSearch", "event_uuid"]);
 
 /* main listener */
 document.addEventListener("DOMContentLoaded", () => {
-    //document.getElementById("statusSearch").addEventListener("change", searchExamlist);
     document.getElementById("editform").classList.add("d-none");
     if (role !== "teacher") {
         document.getElementById("studentSearch").value = user;
@@ -29,14 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("student.fullname").addEventListener("change", setPerson);
         document.getElementById("teacher.fullname").addEventListener("keyup", searchPeople);
         document.getElementById("teacher.fullname").addEventListener("change", setPerson);
+        document.getElementById("event_uuid").addEventListener("change", setSupervisor);
 
-        document.getElementById("examadd").addEventListener("click", function () {
-            const editForm = document.getElementById("editform");
-            editForm.reset();
-            document.getElementById("exam_uuid").value = create_UUID();
-            editForm.classList.remove("d-none");
-            document.getElementById("list").classList.add("d-none");
-        });
+        document.getElementById("examadd").addEventListener("click", addExam);
     }
 
     searchExamlist();
@@ -65,7 +59,7 @@ function searchPeople(event) {
             }
         }, 500);
     } else {
-        let foo='bar';
+        let foo = 'bar';
     }
 }
 
@@ -113,11 +107,21 @@ function setPerson(event) {
 }
 
 /**
+ * shows the supervisor for the selected event
+ */
+function setSupervisor() {
+    const field = document.getElementById("event_uuid");
+    const selected = field.options[field.selectedIndex];
+    const email = selected.getAttribute("data-supervisor");
+    document.getElementById("supervisor").value = email;
+}
+
+/**
  * search people with delay upon input
  * @param event
  */
 function searchExamlist(event) {
-    if (event)   event.preventDefault();
+    if (event) event.preventDefault();
     showMessage("info", "Lade Daten ...", 1);
     let filter = "";
     filter += "student=" + document.getElementById("studentSearch").value;
@@ -180,7 +184,7 @@ function showExamlist(data) {
                         button.innerHTML = "<span class='text-light'><i class='bi bi-at'></i></span>";
                         button.type = "button";
                         button.id = "sendEmail";
-                        button.title = "Email";
+                        button.title = "Sendet dem Lernenden eine Email mit den Angaben zur verpassten Prüfung und dem Nachprüfungstermin";
                         button.className = "btn btn-sm btn-primary ms-1";
                         if (exam.status < '10' || exam.status > '40') {
                             button.disabled = true;
@@ -193,10 +197,20 @@ function showExamlist(data) {
                         button.innerHTML = "<span class='text-light'><i class='bi bi-file-earmark-pdf'></i></span>";
                         button.type = "button";
                         button.id = "createPDF";
-                        button.title = "Drucken";
+                        button.title = "Deckblatt für Prüfungsunterlagen ausdrucken";
                         button.className = "btn btn-sm btn-primary ms-1";
                         button.setAttribute("data-examuuid", exam.exam_uuid);
                         button.addEventListener("click", createPDF);
+                        cell.appendChild(button);
+
+                        button = document.createElement("button");
+                        button.innerHTML = "<span class='text-light'><i class='bi bi-stickies-fill'></i></span>";
+                        button.type = "button";
+                        button.id = "copyExam";
+                        button.title = "Kopie erstellen";
+                        button.className = "btn btn-sm btn-primary ms-1";
+                        button.setAttribute("data-examuuid", exam.exam_uuid);
+                        button.addEventListener("click", copyExam);
                         cell.appendChild(button);
                     }
 
@@ -238,11 +252,35 @@ function sortExams(examA, examB) {
 }
 
 /**
- * event that fires when an exam is selected
+ * opens the editform to add a new exam
+ */
+function addExam() {
+
+    const editForm = document.getElementById("editform");
+    editForm.reset();
+    document.getElementById("exam_uuid").value = create_UUID();
+    editForm.classList.remove("d-none");
+    document.getElementById("list").classList.add("d-none");
+    setSupervisor();
+    document.getElementById("sendexam").checked = true;
+
+}
+
+/**
+ * event that fires to create a copy of an exam
  * @param event
  */
-function selectExam(event) {
-    const uuid = getExamUUID(event)
+function copyExam(event) {
+    selectExam(event, true);
+}
+
+/**
+ * event that fires when an exam is selected
+ * @param event
+ * @param copy  create a copy of this exam
+ */
+function selectExam(event, copy = false) {
+    const uuid = getExamUUID(event);
     document.getElementById("editform").classList.remove("d-none");
     document.getElementById("list").classList.add("d-none");
     readExam(
@@ -250,8 +288,8 @@ function selectExam(event) {
     ).then(exam => {
         for (let property in exam) {
             if (typeof exam[property] === "object") {
-                if (property === "student" || property === "teacher") {
-                    document.getElementById(property + ".fullname").value = exam[property].fullname; // + " (" + exam[property].email + ")";
+                if (property === "teacher" || property === "student") {
+                    document.getElementById(property + ".fullname").value = exam[property].fullname;
                     document.getElementById(property).value = exam[property].email;
                 }
             } else {
@@ -261,7 +299,18 @@ function selectExam(event) {
                 }
             }
         }
-        document.getElementById("teacher.fullname").focus();
+        if (copy) {
+            document.getElementById("exam_uuid").value = create_UUID();
+            document.getElementById("student.fullname").value = "";
+            document.getElementById("student").value = "";
+            document.getElementById("status").value = 0;
+            document.getElementById("room").value = "";
+            document.getElementById("sendexam").checked = true;
+        } else {
+            document.getElementById("sendexam").checked = false;
+        }
+        setSupervisor();
+        document.getElementById("student.fullname").focus();
     }).catch(status => {
         showMessage("danger", "Ein Fehler ist aufgetreten");
     });
@@ -298,8 +347,7 @@ function submitExam(event) {
         saveExam(
             data
         ).then(function () {
-            const button = event.submitter.id;
-            if (button == "sendexam") {
+            if (document.getElementById("sendexam").checked) {
                 const uuid = document.getElementById('exam_uuid').value;
                 const status = document.getElementById('status').value;
                 sendRequest(

@@ -21,10 +21,21 @@ footer .text-center {
     color: var(--bs-cyan);
     border-top: var(--bs-cyan) 2px solid;
 }
-fieldset  {
+
+fieldset {
     padding: 5px;
     margin: 5px 0;
 }
+
+#status option[value=""] {
+    color: var(--bs-red);
+    font-weight: bold;
+}
+
+#status:invalid {
+    color: var(--bs-red);
+}
+
 #popup {
     position: fixed;
     z-index: 99;
@@ -33,6 +44,7 @@ fieldset  {
     top: 10px;
     width: 100%;
 }
+
 #messages {
     position: fixed;
     pointer-events: none;
