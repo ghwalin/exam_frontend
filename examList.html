@@ -4,15 +4,11 @@
   <meta charset="UTF-8">
   <meta name="author" content="Marcel Suter">
   <title>Nachprüfung</title>
-  <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.js"
-          integrity="sha384-o4ufwq3oKqc7IoCcR08YtZXmgOljhTggRwxP2CLbSqeXGtitAxwYaUln/05nJjit"
-          crossorigin="anonymous"></script>
   <script src="./js/config.js"></script>
   <script src="./js/util.js"></script>
   <script src="./js/examData.js"></script>
   <script src="./js/eventData.js"></script>
   <script src="./js/personData.js"></script>
-  <script src="./js/loginCtrl.js"></script>
   <script src="./js/examListCtrl.js" defer></script>
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/exam.css">
@@ -89,7 +85,8 @@
           <label for="statusSearch">
             Status
             <i class="bi bi-question-circle-fill text-info"
-               title="pendent (Arztzeugnis ist pendent)\noffen (Prüfungsunterlagen noch nicht abgegeben)
+               title="pendent (Arztzeugnis ist pendent)
+offen (Prüfungsunterlagen noch nicht abgegeben)
 abgegeben (Prüfungsunterlagen abgegeben)
 erhalten (Aufsicht hat Prüfung erhalten)
 absolviert (Prüfung absolviert)
@@ -170,7 +167,7 @@ gelöscht (Eintrag gelöscht)"></i>
           <label for="duration" class="form-label">Dauer</label>
           <input type="number" required class="form-control" id="duration"/>
           <label for="tools" class="form-label">Hilfsmittel</label>
-          <textarea class="form-control" id="tools">&nbsp;</textarea>
+          <textarea class="form-control" id="tools" rows="3">&nbsp;</textarea>
         </fieldset>
       </div>
       <div class="col-xxl-4 col-lg-6 col-md-12">
@@ -203,19 +200,19 @@ gelöscht (Eintrag gelöscht)"></i>
           </label>
           <input type="text" id="room" class="form-control" readonly/>
           <label for="remarks" class="form-label">Anmerkungen</label>
-          <textarea type="text" class="form-control" id="remarks"></textarea>
+          <textarea type="text" class="form-control" id="remarks" rows="3"></textarea>
         </fieldset>
       </div>
       <div class="row mt-4">
         <div class="col-12">
           <div class="form-check">
-          <input type="checkbox" id="sendexam" class="form-check-input">
-          <label for="sendexam" class="form-check-label">
-            Email an Lernenden senden
-            <i class="bi bi-question-circle-fill text-info"
-               title="Sendet eine Email an den Lernenden mit den Angaben zur verpassten Prüfung und dem Nachprüfungstermin"></i>
-          </label>
-            </div>
+            <input type="checkbox" id="sendexam" class="form-check-input">
+            <label for="sendexam" class="form-check-label">
+              Email an Lernenden senden
+              <i class="bi bi-question-circle-fill text-info"
+                 title="Sendet eine Email an den Lernenden mit den Angaben zur verpassten Prüfung und dem Nachprüfungstermin"></i>
+            </label>
+          </div>
         </div>
         <div class="col-12">
           <button class="btn btn-primary" type="submit" id="saveexam" name="safeexam">Speichern</button>
@@ -227,7 +224,6 @@ gelöscht (Eintrag gelöscht)"></i>
           <input tabindex="-1" type="hidden" class="form-control" id="exam_uuid" readonly/>
         </div>
       </div>
-      </fieldset>
     </form>
   </div>
 </main>

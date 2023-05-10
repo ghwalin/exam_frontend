@@ -58,8 +58,6 @@ function searchPeople(event) {
                 });
             }
         }, 500);
-    } else {
-        let foo = 'bar';
     }
 }
 
@@ -72,7 +70,7 @@ function setPeopleList(data, fieldname) {
     let parts = fieldname.split(".");
     let datalist = document.getElementById(parts[0] + ".list");
     datalist.innerHTML = "";
-    count = 0;
+    let count = 0;
     data.forEach(person => {
         let option = document.createElement("option");
         option.value = person.email;
@@ -83,7 +81,7 @@ function setPeopleList(data, fieldname) {
         datalist.appendChild(option);
         count++;
     });
-    datalist.setAttribute("size", Math.min(count, 10));
+    datalist.setAttribute("size", Math.min(count, 10).toString());
     document.getElementById(fieldname).focus();
 }
 
@@ -112,8 +110,7 @@ function setPerson(event) {
 function setSupervisor() {
     const field = document.getElementById("event_uuid");
     const selected = field.options[field.selectedIndex];
-    const email = selected.getAttribute("data-supervisor");
-    document.getElementById("supervisor").value = email;
+    document.getElementById("supervisor").value = selected.getAttribute("data-supervisor");
 }
 
 /**
@@ -295,7 +292,8 @@ function selectExam(event, copy = false) {
             } else {
                 const field = document.getElementById(property);
                 if (field !== null) {
-                    field.value = exam[property];
+                    const value = exam[property].toString();
+                    field.value = value.replaceAll("CRLF", "\n");
                 }
             }
         }
@@ -358,7 +356,7 @@ function submitExam(event) {
             document.getElementById("list").classList.remove("d-none");
             searchExamlist();
         }).catch(result => {
-            if (result == "400") {
+            if (result === "400") {
                 showMessage("danger", "Daten ungültig oder unvollständig")
             } else {
                 showMessage("danger", "Allgemeiner Fehler beim Speichern")

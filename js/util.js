@@ -31,7 +31,6 @@ const statusData = {
     "90": {"text": "gelöscht", "icon": "<span class='text-danger'><i class='bi bi-trash3-fill'></i>&nbsp;</span>"}
 }
 
-let delayTimer;
 let messageTimer;
 let running = false;
 

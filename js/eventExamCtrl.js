@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         document.getElementById("dateSearch").addEventListener("change", searchExamlist);
         document.getElementById("selectAll").addEventListener("change", selectAll);
-        document.getElementById("sendEmail").addEventListener("click", sendReminder);
+        document.getElementById("sendEmail").addEventListener("click", sendInvitation);
         document.getElementById("sendReminder").addEventListener("click", sendReminder);
         document.getElementById("createPDF").addEventListener("click", createAllPDF);
     }
@@ -58,14 +58,14 @@ function showExamlist(data, locked) {
             let prevEmail = "";
             let count = 0;
             data.forEach(exam => {
-                if (exam.status != 90) {
+                if (exam.status !== 90) {
                     try {
                         let row = rows.insertRow(-1);
                         let cell = row.insertCell(-1);
                         let field = document.createElement("input");
                         field.type = "checkbox";
                         field.name = "selected";
-                        field.classList = "form-check-input";
+                        field.classList.add("form-check-input");
                         field.setAttribute("data-examUUID", exam.exam_uuid);
                         cell.appendChild(field);
 
@@ -73,13 +73,13 @@ function showExamlist(data, locked) {
                         if (exam.student.email !== prevEmail) {
                             prevEmail = exam.student.email;
                             count++;
-                            cell.innerText = count;
+                            cell.innerText = count.toString();
                         }
                         cell = row.insertCell(-1);
                         let dropdown = document.createElement("select");
                         dropdown.setAttribute("data-examUUID", exam.exam_uuid);
                         dropdown.addEventListener("change", changeExam);
-                        dropdown.classList = "form-select";
+                        dropdown.classList.add("form-select");
                         addOptions(dropdown);
                         dropdown.value = exam.status;
                         dropdown.name = "status";
@@ -124,8 +124,7 @@ function changeExam(event) {
     data.set('exam_uuid', examUUID);
     let fieldname = event.target.name;
     data.set(fieldname, event.target.value);
-    saveExam(data);
-    showMessage("clear", "");
+    saveExam(data).then(showMessage("clear", ""));
 }
 
 /**
@@ -196,25 +195,22 @@ function sendAllEmail(service) {
 
 /**
  * sends an invitiation email for all selected exams
- * @param event
  */
-function sendInvitation(event) {
+function sendInvitation() {
     sendAllEmail("/email/invitation");
 }
 
 /**
  * sends a reminder email for all selected exams
- * @param event
  */
-function sendReminder(event) {
+function sendReminder() {
     sendAllEmail("/email/reminder")
 }
 
 /**
  * creates a PDF for all selected exams
- * @param event
  */
-function createAllPDF(event) {
+function createAllPDF() {
     showMessage("info", "PDF wird erstellt ...", 2);
     let data = new URLSearchParams();
     const boxes = document.querySelectorAll("input:checked");
