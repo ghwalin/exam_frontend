@@ -50,6 +50,12 @@ function setEventList(data, elementIds) {
             option.setAttribute("data-locked", locked);
             for (let key in targets) {
                 let copy = option.cloneNode(true);
+
+                if (targets[key].id === "event_uuid" &&
+                examEvent.status !== "open") {
+                    copy.disabled = true;
+                    copy.setAttribute("data-locked", locked);
+                }
                 targets[key].appendChild(copy);
             }
         });
