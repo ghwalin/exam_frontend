@@ -22,6 +22,20 @@ footer .text-center {
     border-top: var(--bs-cyan) 2px solid;
 }
 
+fieldset {
+    padding: 5px;
+    margin: 5px 0;
+}
+
+#status option[value=""] {
+    color: var(--bs-red);
+    font-weight: bold;
+}
+
+#status:invalid {
+    color: var(--bs-red);
+}
+
 #popup {
     position: fixed;
     z-index: 99;
@@ -30,6 +44,7 @@ footer .text-center {
     top: 10px;
     width: 100%;
 }
+
 #messages {
     position: fixed;
     pointer-events: none;
@@ -50,12 +65,7 @@ footer .text-center {
 
 .table thead {
     position: sticky;
-    position: -webkit-sticky;
     top: 0;
     background: white;
     inset-block-start: 0;
-}
-
-#student\.fullname {
-    position: absolute;
 }

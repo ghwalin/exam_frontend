@@ -9,6 +9,7 @@
           crossorigin="anonymous"></script>
   <script src="./js/config.js"></script>
   <script src="./js/util.js" defer></script>
+  <script src="./js/news.js" defer></script>
   <script src="./js/personData.js" defer></script>
   <script src="./js/loginCtrl.js" defer></script>
   <link rel="stylesheet" href="./css/bootstrap.min.css">
@@ -22,13 +23,21 @@
       <img src="./img/BZZ_Logo_Web.png" alt="" width="40" height="40"/>
       BZZ Nachprüfungen
     </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item ms-auto">
+          <a class="nav-link" aria-current="page" href="https://it.bzz.ch/wikiV2/howto/exam/start"
+             target="_blank">Anleitung</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 <div id="popup">
   <div id="messages" class="alert" role="alert"></div>
 </div>
 <main class="container pt-4">
-  <div id="title">
+  <div id="title" class="row">
     <h4>Melden Sie sich an mit Ihrem Benutzerkonto bei</h4>
   </div>
   <div>
@@ -36,11 +45,14 @@
       BZZ Intranet
     </button>
   </div>
-
+  <div class="row mt-5">
+    <div id="news" class="alert alert-info" role="alert">
+    </div>
+  </div>
 </main>
 <footer class="text-center text-lg-start">
   <div class="container-xxl text-info text-center p-3">
-    Exam v0.8r20230215 &copy; 2023 by Marcel Suter
+     Exam v1.1r20230516 &copy; 2023 by Marcel Suter
   </div>
 </footer>
 

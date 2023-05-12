@@ -6,16 +6,31 @@
 const user = readStorage("email");
 const role = readStorage("role");
 const statusData = {
-    "10": {"text": "pendent", "icon": "<span class='text-warning'><i class='bi bi-exclamation-triangle-fill'></i>&nbsp;</span>"},
+    "10": {
+        "text": "pendent",
+        "icon": "<span class='text-warning'><i class='bi bi-exclamation-triangle-fill'></i>&nbsp;</span>"
+    },
     "20": {"text": "offen", "icon": "<span class='text-warning'><i class='bi bi-info-square-fill'></i>&nbsp;</span>"},
-    "30": {"text": "abgegeben", "icon": "<span class='text-primary'><i class='bi bi-envelope-paper-fill'></i>&nbsp;</span>"},
-    "40": {"text": "erhalten", "icon": "<span class='text-primary'><i class='bi bi-envelope-check-fill'></i>&nbsp;</span>"},
-    "50": {"text": "absolviert", "icon": "<span class='text-success'><i class='bi bi-check-circle-fill'></i>&nbsp;</span>"},
+    "30": {
+        "text": "abgegeben",
+        "icon": "<span class='text-primary'><i class='bi bi-envelope-paper-fill'></i>&nbsp;</span>"
+    },
+    "35": {
+        "text": "elektronisch",
+        "icon": "<span class='text-primary'><i class='bi bi-window-stack'></i>&nbsp;</span>"
+    },
+    "40": {
+        "text": "erhalten",
+        "icon": "<span class='text-primary'><i class='bi bi-envelope-check-fill'></i>&nbsp;</span>"
+    },
+    "50": {
+        "text": "absolviert",
+        "icon": "<span class='text-success'><i class='bi bi-check-circle-fill'></i>&nbsp;</span>"
+    },
     "80": {"text": "pnab", "icon": "<span class='text-danger'><i class='bi bi-x-octagon-fill'></i>&nbsp;</span>"},
     "90": {"text": "gelöscht", "icon": "<span class='text-danger'><i class='bi bi-trash3-fill'></i>&nbsp;</span>"}
 }
 
-let delayTimer;
 let messageTimer;
 let running = false;
 
@@ -211,6 +226,8 @@ function getStatus(event) {
     let targetElement = event.target;
     if (targetElement.tagName === "IMG") {
         targetElement = targetElement.parentNode;
+    } else if (targetElement.tagName === "I") {
+        targetElement = targetElement.parentNode.parentNode;
     }
     return targetElement.getAttribute("data-status");
 }
