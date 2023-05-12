@@ -20,7 +20,12 @@ function readExamlist(filter) {
  */
 function saveExam(data) {
 
-    let httpMethod = "POST";
-    if (data["exam_uuid"] !== "") httpMethod = "PUT";
+    let httpMethod = "PUT";
+    let uuid = data.get("exam_uuid");
+    if (uuid === null || uuid.trim() === "") {
+        data["exam_uuid"] = create_UUID();
+        httpMethod = "POST";
+    }
+
     return sendRequest(API_URL + "/exam", httpMethod, data, "text");
 }

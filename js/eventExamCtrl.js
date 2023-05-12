@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dateSearch").addEventListener("change", searchExamlist);
         document.getElementById("selectAll").addEventListener("change", selectAll);
         document.getElementById("sendEmail").addEventListener("click", sendInvitation);
-        document.getElementById("sendReminder").addEventListener("click", sendReminder);
+        // document.getElementById("sendReminder").addEventListener("click", sendReminder);  TODO Version 1.2
         document.getElementById("createPDF").addEventListener("click", createAllPDF);
     }
 });

@@ -255,7 +255,6 @@ function addExam() {
 
     const editForm = document.getElementById("editform");
     editForm.reset();
-    document.getElementById("exam_uuid").value = create_UUID();
     editForm.classList.remove("d-none");
     document.getElementById("list").classList.add("d-none");
     setSupervisor();
