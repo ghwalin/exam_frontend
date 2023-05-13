@@ -297,7 +297,7 @@ function selectExam(event, copy = false) {
             }
         }
         if (copy) {
-            document.getElementById("exam_uuid").value = create_UUID();
+            document.getElementById("exam_uuid").value = "";
             document.getElementById("student.fullname").value = "";
             document.getElementById("student").value = "";
             document.getElementById("status").value = 0;
