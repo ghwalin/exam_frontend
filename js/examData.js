@@ -11,7 +11,8 @@ function readExam(uuid) {
  * @param filter
  */
 function readExamlist(filter) {
-    return sendRequest(API_URL + "/exams?" + filter);
+    const result = sendRequest(API_URL + "/exams?" + filter);
+    return result;
 }
 
 /**
@@ -26,6 +27,6 @@ function saveExam(data) {
         data["exam_uuid"] = create_UUID();
         httpMethod = "POST";
     }
-
-    return sendRequest(API_URL + "/exam", httpMethod, data, "text");
+    const result = sendRequest(API_URL + "/exam", httpMethod, data, "text");
+    return result;
 }

@@ -46,7 +46,14 @@ async function sendRequest(url, method = "GET", bodyData = null, type = "json") 
     let reason = "";
     try {
         let result = await httpFetch(url, method, bodyData, "access", type);
-        return Promise.resolve(result);
+        if (
+            result.status === "404" &&
+            (method === "PUT" || method === "POST")
+        ) {
+            return Promise.reject("404");
+        } else {
+            return Promise.resolve(result);
+        }
     } catch (err) {
         console.log(err);
         reason = err;

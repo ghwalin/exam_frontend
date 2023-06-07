@@ -34,7 +34,7 @@ function searchExamlist() {
     readExamlist(filter).then(data => {
         showExamlist(data, locked);
     }).catch(result => {
-
+        console.log(result);
     });
 }
 
@@ -58,7 +58,7 @@ function showExamlist(data, locked) {
             let prevEmail = "";
             let count = 0;
             data.forEach(exam => {
-                if (exam.status !== 90) {
+                if (exam.status !== "90") {
                     try {
                         let row = rows.insertRow(-1);
                         let cell = row.insertCell(-1);
@@ -97,7 +97,7 @@ function showExamlist(data, locked) {
                         cell = row.insertCell(-1);
                         cell.innerHTML = exam.teacher.firstname + " " + exam.teacher.lastname;
                         cell = row.insertCell(-1);
-                        cell.innerHTML = exam.module + " / " + exam.exam_num.substring(0,15);
+                        cell.innerHTML = exam.module + " / " + exam.exam_num.substring(0, 15);
                         cell = row.insertCell(-1);
                         cell.innerHTML = exam.duration;
                     } catch (error) {
@@ -124,7 +124,15 @@ function changeExam(event) {
     data.set('exam_uuid', examUUID);
     let fieldname = event.target.name;
     data.set(fieldname, event.target.value);
-    saveExam(data).then(showMessage("clear", ""));
+    saveExam(data)
+        .then(showMessage("clear", ""))
+.
+    catch(reason => {
+        console.log(reason);
+        if (reason === "404") {
+            showMessage("danger", "Beim Speichern ist ein Fehler aufgetreten. Bitte probiere es später nocheinmal.");
+        }
+    });
 }
 
 /**
