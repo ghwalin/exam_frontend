@@ -57,6 +57,7 @@ function showExamlist(data, locked) {
             data.sort(sortExams);
             let prevEmail = "";
             let count = 0;
+            let distinctStudent = {};
             data.forEach(exam => {
                 if (exam.status !== "90") {
                     try {
@@ -74,6 +75,7 @@ function showExamlist(data, locked) {
                             prevEmail = exam.student.email;
                             count++;
                             cell.innerText = count.toString();
+                            distinctStudent[exam.student.email] = 1;
                         }
                         cell = row.insertCell(-1);
                         let dropdown = document.createElement("select");
@@ -105,6 +107,7 @@ function showExamlist(data, locked) {
                     }
                 }
             });
+            document.getElementById("distinct").innerText = Object.keys(distinctStudent).length
             lockForm("filterForm", locked);
             showMessage("clear", "");
         } else {
