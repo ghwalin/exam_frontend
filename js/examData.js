@@ -24,7 +24,9 @@ function saveExam(data) {
     let httpMethod = "PUT";
     let uuid = data.get("exam_uuid");
     if (uuid === null || uuid.trim() === "") {
-        data["exam_uuid"] = create_UUID();
+        uuid = create_UUID();
+        data.set("exam_uuid", uuid);
+        document.getElementById('exam_uuid').value = uuid;
         httpMethod = "POST";
     }
     const result = sendRequest(API_URL + "/exam", httpMethod, data, "text");
